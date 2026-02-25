@@ -1,0 +1,27 @@
+# macOS
+.DS_Store
+**/.DS_Store
+
+# Spotlight / Finder
+.Spotlight-V100
+.Trashes
+.AppleDouble
+.LSOverride
+
+# Logs
+*.log
+
+# Temporary files
+*.tmp
+*.swp
+*.bak
+
+# VSCode (если не хочешь хранить workspace state)
+.vscode/settings.json
+.vscode/*.log
+
+# iTerm2 auto-generated state (если появится)
+iterm2/*.plist.lockfile
+
+# Karabiner runtime files (если появятся)
+karabiner/log/
