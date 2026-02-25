@@ -131,7 +131,7 @@
                                     }
                                 ],
                                 "from": { "key_code": "left_control" },
-                                "parameters": { "basic.to_delayed_action_delay_milliseconds": 450 },
+                                "parameters": { "basic.to_delayed_action_delay_milliseconds": 440 },
                                 "to": [{ "key_code": "left_control" }],
                                 "to_delayed_action": {
                                     "to_if_invoked": [
