@@ -1,0 +1,78 @@
+{
+    "profiles": [
+        {
+            "complex_modifications": {
+                "rules": [
+                    {
+                        "description": "Caps Lock cycles between RU, LV, and US instantly",
+                        "manipulators": [
+                            {
+                                "conditions": [
+                                    {
+                                        "name": "current_lang",
+                                        "type": "variable_if",
+                                        "value": 3
+                                    }
+                                ],
+                                "from": { "key_code": "caps_lock" },
+                                "to": [
+                                    {
+                                        "set_variable": {
+                                            "name": "current_lang",
+                                            "value": 1
+                                        }
+                                    },
+                                    { "select_input_source": { "input_source_id": "com.apple.keylayout.Russian" } }
+                                ],
+                                "type": "basic"
+                            },
+                            {
+                                "conditions": [
+                                    {
+                                        "name": "current_lang",
+                                        "type": "variable_if",
+                                        "value": 1
+                                    }
+                                ],
+                                "from": { "key_code": "caps_lock" },
+                                "to": [
+                                    {
+                                        "set_variable": {
+                                            "name": "current_lang",
+                                            "value": 2
+                                        }
+                                    },
+                                    { "select_input_source": { "input_source_id": "com.apple.keylayout.Latvian" } }
+                                ],
+                                "type": "basic"
+                            },
+                            {
+                                "conditions": [
+                                    {
+                                        "name": "current_lang",
+                                        "type": "variable_if",
+                                        "value": 2
+                                    }
+                                ],
+                                "from": { "key_code": "caps_lock" },
+                                "to": [
+                                    {
+                                        "set_variable": {
+                                            "name": "current_lang",
+                                            "value": 3
+                                        }
+                                    },
+                                    { "select_input_source": { "input_source_id": "com.apple.keylayout.US" } }
+                                ],
+                                "type": "basic"
+                            }
+                        ]
+                    }
+                ]
+            },
+            "name": "Default profile",
+            "selected": true,
+            "virtual_hid_keyboard": { "keyboard_type_v2": "iso" }
+        }
+    ]
+}

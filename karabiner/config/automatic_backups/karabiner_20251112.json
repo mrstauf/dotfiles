@@ -1,0 +1,87 @@
+{
+  "global": {
+    "check_for_updates_on_startup": true,
+    "show_in_menu_bar": true
+  },
+  "profiles": [
+    {
+      "name": "Default profile",
+      "selected": true,
+      "complex_modifications": {
+        "rules": [
+          {
+            "description": "Caps Lock cycles between RU, LV, and US instantly",
+            "manipulators": [
+              {
+                "type": "basic",
+                "from": { "key_code": "caps_lock" },
+                "to": [
+                  {
+                    "set_variable": { "name": "current_lang", "value": 1 }
+                  },
+                  {
+                    "select_input_source": {
+                      "input_source_id": "com.apple.keylayout.Russian"
+                    }
+                  }
+                ],
+                "conditions": [
+                  {
+                    "type": "variable_if",
+                    "name": "current_lang",
+                    "value": 3
+                  }
+                ]
+              },
+              {
+                "type": "basic",
+                "from": { "key_code": "caps_lock" },
+                "to": [
+                  {
+                    "set_variable": { "name": "current_lang", "value": 2 }
+                  },
+                  {
+                    "select_input_source": {
+                      "input_source_id": "com.apple.keylayout.Latvian"
+                    }
+                  }
+                ],
+                "conditions": [
+                  {
+                    "type": "variable_if",
+                    "name": "current_lang",
+                    "value": 1
+                  }
+                ]
+              },
+              {
+                "type": "basic",
+                "from": { "key_code": "caps_lock" },
+                "to": [
+                  {
+                    "set_variable": { "name": "current_lang", "value": 3 }
+                  },
+                  {
+                    "select_input_source": {
+                      "input_source_id": "com.apple.keylayout.US"
+                    }
+                  }
+                ],
+                "conditions": [
+                  {
+                    "type": "variable_if",
+                    "name": "current_lang",
+                    "value": 2
+                  }
+                ]
+              }
+            ]
+          }
+        ]
+      },
+      "virtual_hid_keyboard": {
+        "keyboard_type_v2": "iso"
+      }
+    }
+  ]
+}

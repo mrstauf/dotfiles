@@ -1,0 +1,74 @@
+{
+    "profiles": [
+        {
+            "complex_modifications": {
+                "rules": [
+                    {
+  "description": "Caps: toggle Russian <-> last Latin (US/LV) instantly",
+  "manipulators": [
+    {
+      "type": "basic",
+      "from": { "key_code": "caps_lock" },
+      "conditions": [
+        { "type": "input_source_if", "input_sources": [{ "input_source_id": "com.apple.keylayout.US" }] }
+      ],
+      "to": [
+        { "set_variable": { "name": "kb_last_latin", "value": 1 } },
+        { "select_input_source": { "input_source_id": "com.apple.keylayout.Russian" } }
+      ]
+    },
+    {
+      "type": "basic",
+      "from": { "key_code": "caps_lock" },
+      "conditions": [
+        { "type": "input_source_if", "input_sources": [{ "input_source_id": "com.apple.keylayout.Latvian" }] }
+      ],
+      "to": [
+        { "set_variable": { "name": "kb_last_latin", "value": 2 } },
+        { "select_input_source": { "input_source_id": "com.apple.keylayout.Russian" } }
+      ]
+    },
+    {
+      "type": "basic",
+      "from": { "key_code": "caps_lock" },
+      "conditions": [
+        { "type": "input_source_if", "input_sources": [{ "input_source_id": "com.apple.keylayout.Russian" }] },
+        { "type": "variable_if", "name": "kb_last_latin", "value": 2 }
+      ],
+      "to": [
+        { "select_input_source": { "input_source_id": "com.apple.keylayout.Latvian" } }
+      ]
+    },
+    {
+      "type": "basic",
+      "from": { "key_code": "caps_lock" },
+      "conditions": [
+        { "type": "input_source_if", "input_sources": [{ "input_source_id": "com.apple.keylayout.Russian" }] },
+        { "type": "variable_if", "name": "kb_last_latin", "value": 1 }
+      ],
+      "to": [
+        { "select_input_source": { "input_source_id": "com.apple.keylayout.US" } }
+      ]
+    },
+    {
+      "type": "basic",
+      "from": { "key_code": "caps_lock" },
+      "conditions": [
+        { "type": "input_source_if", "input_sources": [{ "input_source_id": "com.apple.keylayout.Russian" }] },
+        { "type": "variable_unless", "name": "kb_last_latin", "value": 1 },
+        { "type": "variable_unless", "name": "kb_last_latin", "value": 2 }
+      ],
+      "to": [
+        { "select_input_source": { "input_source_id": "com.apple.keylayout.US" } }
+      ]
+    }
+  ]
+}
+                ]
+            },
+            "name": "Default profile",
+            "selected": true,
+            "virtual_hid_keyboard": { "keyboard_type_v2": "iso" }
+        }
+    ]
+}

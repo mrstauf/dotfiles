@@ -1,0 +1,355 @@
+{
+    "description": "Caps: single=a, double=b (test)",
+    "manipulators": [
+        {
+            "from": { "key_code": "caps_lock" },
+            "parameters": { "basic.to_delayed_action_delay_milliseconds": 250 },
+            "to": [
+                {
+                    "set_variable": {
+                        "name": "caps_waiting",
+                        "value": 1
+                    }
+                }
+            ],
+            "to_delayed_action": {
+                "to_if_canceled": [
+                    {
+                        "set_variable": {
+                            "name": "caps_waiting",
+                            "value": 0
+                        }
+                    }
+                ],
+                "to_if_invoked": [
+                    {
+                        "set_variable": {
+                            "name": "caps_waiting",
+                            "value": 0
+                        }
+                    },
+                    { "key_code": "a" }
+                ]
+            },
+            "type": "basic"
+        },
+        {
+            "conditions": [
+                {
+                    "name": "caps_waiting",
+                    "type": "variable_if",
+                    "value": 1
+                }
+            ],
+            "from": { "key_code": "caps_lock" },
+            "to": [
+                {
+                    "set_variable": {
+                        "name": "caps_waiting",
+                        "value": 0
+                    }
+                },
+                { "key_code": "b" }
+            ],
+            "type": "basic"
+        }
+    ],
+    "profiles": [
+        {
+            "complex_modifications": {
+                "rules": [
+                    {
+                        "description": "Left Ctrl taps: double=Lock, triple=Sleep (Ctrl combos unaffected)",
+                        "manipulators": [
+                            {
+                                "conditions": [
+                                    {
+                                        "name": "lctrl_stage",
+                                        "type": "variable_if",
+                                        "value": 2
+                                    }
+                                ],
+                                "from": { "key_code": "left_control" },
+                                "to": [{ "key_code": "left_control" }],
+                                "to_if_alone": [
+                                    {
+                                        "set_variable": {
+                                            "name": "lctrl_stage",
+                                            "value": 0
+                                        }
+                                    },
+                                    { "shell_command": "pmset sleepnow" }
+                                ],
+                                "type": "basic"
+                            },
+                            {
+                                "conditions": [
+                                    {
+                                        "name": "lctrl_stage",
+                                        "type": "variable_if",
+                                        "value": 1
+                                    }
+                                ],
+                                "from": { "key_code": "left_control" },
+                                "parameters": { "basic.to_delayed_action_delay_milliseconds": 380 },
+                                "to": [{ "key_code": "left_control" }],
+                                "to_delayed_action": {
+                                    "to_if_invoked": [
+                                        {
+                                            "key_code": "q",
+                                            "modifiers": ["left_control", "left_command"]
+                                        },
+                                        {
+                                            "set_variable": {
+                                                "name": "lctrl_stage",
+                                                "value": 0
+                                            }
+                                        }
+                                    ]
+                                },
+                                "to_if_alone": [
+                                    {
+                                        "set_variable": {
+                                            "name": "lctrl_stage",
+                                            "value": 2
+                                        }
+                                    }
+                                ],
+                                "type": "basic"
+                            },
+                            {
+                                "conditions": [
+                                    {
+                                        "name": "lctrl_stage",
+                                        "type": "variable_unless",
+                                        "value": 1
+                                    },
+                                    {
+                                        "name": "lctrl_stage",
+                                        "type": "variable_unless",
+                                        "value": 2
+                                    }
+                                ],
+                                "from": { "key_code": "left_control" },
+                                "parameters": { "basic.to_delayed_action_delay_milliseconds": 450 },
+                                "to": [{ "key_code": "left_control" }],
+                                "to_delayed_action": {
+                                    "to_if_invoked": [
+                                        {
+                                            "set_variable": {
+                                                "name": "lctrl_stage",
+                                                "value": 0
+                                            }
+                                        }
+                                    ]
+                                },
+                                "to_if_alone": [
+                                    {
+                                        "set_variable": {
+                                            "name": "lctrl_stage",
+                                            "value": 1
+                                        }
+                                    }
+                                ],
+                                "type": "basic"
+                            }
+                        ]
+                    },
+                    {
+                        "description": "Shift+Caps: toggle US <-> LV (no timers)",
+                        "manipulators": [
+                            {
+                                "conditions": [
+                                    {
+                                        "input_sources": [{ "input_source_id": "com.apple.keylayout.US" }],
+                                        "type": "input_source_if"
+                                    }
+                                ],
+                                "from": {
+                                    "key_code": "caps_lock",
+                                    "modifiers": {
+                                        "mandatory": ["left_shift"],
+                                        "optional": ["any"]
+                                    }
+                                },
+                                "to": [
+                                    {
+                                        "set_variable": {
+                                            "name": "kb_last_latin",
+                                            "value": 2
+                                        }
+                                    },
+                                    { "select_input_source": { "input_source_id": "com.apple.keylayout.Latvian" } }
+                                ],
+                                "type": "basic"
+                            },
+                            {
+                                "conditions": [
+                                    {
+                                        "input_sources": [{ "input_source_id": "com.apple.keylayout.Latvian" }],
+                                        "type": "input_source_if"
+                                    }
+                                ],
+                                "from": {
+                                    "key_code": "caps_lock",
+                                    "modifiers": {
+                                        "mandatory": ["left_shift"],
+                                        "optional": ["any"]
+                                    }
+                                },
+                                "to": [
+                                    {
+                                        "set_variable": {
+                                            "name": "kb_last_latin",
+                                            "value": 1
+                                        }
+                                    },
+                                    { "select_input_source": { "input_source_id": "com.apple.keylayout.US" } }
+                                ],
+                                "type": "basic"
+                            },
+                            {
+                                "conditions": [
+                                    {
+                                        "input_sources": [{ "input_source_id": "com.apple.keylayout.Russian" }],
+                                        "type": "input_source_if"
+                                    },
+                                    {
+                                        "name": "kb_last_latin",
+                                        "type": "variable_if",
+                                        "value": 2
+                                    }
+                                ],
+                                "from": {
+                                    "key_code": "caps_lock",
+                                    "modifiers": {
+                                        "mandatory": ["left_shift"],
+                                        "optional": ["any"]
+                                    }
+                                },
+                                "to": [
+                                    {
+                                        "set_variable": {
+                                            "name": "kb_last_latin",
+                                            "value": 1
+                                        }
+                                    },
+                                    { "select_input_source": { "input_source_id": "com.apple.keylayout.US" } }
+                                ],
+                                "type": "basic"
+                            },
+                            {
+                                "conditions": [
+                                    {
+                                        "input_sources": [{ "input_source_id": "com.apple.keylayout.Russian" }],
+                                        "type": "input_source_if"
+                                    },
+                                    {
+                                        "name": "kb_last_latin",
+                                        "type": "variable_unless",
+                                        "value": 2
+                                    }
+                                ],
+                                "from": {
+                                    "key_code": "caps_lock",
+                                    "modifiers": {
+                                        "mandatory": ["left_shift"],
+                                        "optional": ["any"]
+                                    }
+                                },
+                                "to": [
+                                    {
+                                        "set_variable": {
+                                            "name": "kb_last_latin",
+                                            "value": 2
+                                        }
+                                    },
+                                    { "select_input_source": { "input_source_id": "com.apple.keylayout.Latvian" } }
+                                ],
+                                "type": "basic"
+                            }
+                        ]
+                    },
+                    {
+                        "description": "Caps: toggle Russian <-> last Latin (US/LV) instantly (no double)",
+                        "manipulators": [
+                            {
+                                "conditions": [
+                                    {
+                                        "input_sources": [{ "input_source_id": "com.apple.keylayout.US" }],
+                                        "type": "input_source_if"
+                                    }
+                                ],
+                                "from": { "key_code": "caps_lock" },
+                                "to": [
+                                    {
+                                        "set_variable": {
+                                            "name": "kb_last_latin",
+                                            "value": 1
+                                        }
+                                    },
+                                    { "select_input_source": { "input_source_id": "com.apple.keylayout.Russian" } }
+                                ],
+                                "type": "basic"
+                            },
+                            {
+                                "conditions": [
+                                    {
+                                        "input_sources": [{ "input_source_id": "com.apple.keylayout.Latvian" }],
+                                        "type": "input_source_if"
+                                    }
+                                ],
+                                "from": { "key_code": "caps_lock" },
+                                "to": [
+                                    {
+                                        "set_variable": {
+                                            "name": "kb_last_latin",
+                                            "value": 2
+                                        }
+                                    },
+                                    { "select_input_source": { "input_source_id": "com.apple.keylayout.Russian" } }
+                                ],
+                                "type": "basic"
+                            },
+                            {
+                                "conditions": [
+                                    {
+                                        "input_sources": [{ "input_source_id": "com.apple.keylayout.Russian" }],
+                                        "type": "input_source_if"
+                                    },
+                                    {
+                                        "name": "kb_last_latin",
+                                        "type": "variable_if",
+                                        "value": 2
+                                    }
+                                ],
+                                "from": { "key_code": "caps_lock" },
+                                "to": [{ "select_input_source": { "input_source_id": "com.apple.keylayout.Latvian" } }],
+                                "type": "basic"
+                            },
+                            {
+                                "conditions": [
+                                    {
+                                        "input_sources": [{ "input_source_id": "com.apple.keylayout.Russian" }],
+                                        "type": "input_source_if"
+                                    },
+                                    {
+                                        "name": "kb_last_latin",
+                                        "type": "variable_unless",
+                                        "value": 2
+                                    }
+                                ],
+                                "from": { "key_code": "caps_lock" },
+                                "to": [{ "select_input_source": { "input_source_id": "com.apple.keylayout.US" } }],
+                                "type": "basic"
+                            }
+                        ]
+                    }
+                ]
+            },
+            "name": "Default profile",
+            "selected": true,
+            "virtual_hid_keyboard": { "keyboard_type_v2": "iso" }
+        }
+    ]
+}
