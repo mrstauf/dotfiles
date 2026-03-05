@@ -60,7 +60,6 @@
                 "rules": [
                     {
                         "description": "Left Ctrl taps: double=Lock, triple=Sleep (Ctrl combos unaffected)",
-                        "enabled": false,
                         "manipulators": [
                             {
                                 "conditions": [
